@@ -1,0 +1,4 @@
+package org.openjdk.jmh.samples.generated;
+public class JMHSample_33_SecurityManager_SecurityManagerEmpty_jmh extends JMHSample_33_SecurityManager_SecurityManagerEmpty_jmh_B3 {
+}
+

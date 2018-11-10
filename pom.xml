@@ -1,0 +1,146 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>terry.codex</groupId>
+	<artifactId>JmhDemo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>JmhDemo</name>
+	<description>OpenJDK JMH微基准测试DEMO</description>
+
+	<properties>
+		<maven.compiler.source.version>1.8</maven.compiler.source.version>
+		<maven.compiler.target.version>1.8</maven.compiler.target.version>
+		<jmh.version>1.9.3</jmh.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.openjdk.jmh</groupId>
+			<artifactId>jmh-core</artifactId>
+			<version>${jmh.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjdk.jmh</groupId>
+			<artifactId>jmh-generator-annprocess</artifactId>
+			<version>${jmh.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<!-- 项目打包（packaging）后的文件名，去掉了后缀 -->
+		<finalName>${project.artifactId}</finalName>
+		<!--默认源代码目录 -->
+		<sourceDirectory>src</sourceDirectory>
+		<outputDirectory>${project.build.directory}/classes</outputDirectory> <!-- ${project.build.directory}就是我们通常看到的target目录 -->
+		<!--默认测试源代码目录 -->
+		<testSourceDirectory>test </testSourceDirectory>
+		<testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
+		<!--默认资源目录 -->
+		<resources>
+			<resource>
+				<directory>src</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<!--默认测试资源目录 -->
+		<testResources>
+			<testResource>
+				<directory>test</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<!-- 源代码Java编译版本 -->
+						<source>${maven.compiler.source.version}</source>
+						<!-- 目标平台Java编译版本 -->
+						<target>${maven.compiler.target.version}</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-shade-plugin</artifactId>
+					<version>2.0</version>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>shade</goal>
+							</goals>
+							<configuration>
+								<finalName>microbenchmarks</finalName>
+								<transformers>
+									<transformer
+										implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+										<mainClass>org.openjdk.jmh.Main</mainClass>
+									</transformer>
+								</transformers>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<!-- repositories 配置远程仓库 -->
+	<!-- 1、先从settings.xml配置的仓库<repositories>中下载构建（即jar包），如果没有该构建，则从pom.xml的<repositories>中下载 -->
+	<!-- 2、构建的下载，按照配置的仓库的先后顺序来查找和下载 -->
+	<!-- 3、【特别注意】 如果 settings.xml配置了mirrors镜像仓库，则该配置无效！【不】会从pom.xml的<repositories>中下载，只会从mirrors镜像仓库中查找下载！ -->
+	<repositories>
+		<repository>
+			<id>nexus-aliyun</id>
+			<name>Nexus aliyun</name>
+			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>Central2</id>
+			<name>Central Repository</name>
+			<url>http://central.maven.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>nexus-aliyun</id>
+			<name>Nexus aliyun</name>
+			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>Central2</id>
+			<name>Central Repository</name>
+			<url>http://central.maven.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>
